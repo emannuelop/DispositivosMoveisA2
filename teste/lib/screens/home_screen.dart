@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/home_card.dart';
-import 'boletim_screen.dart';
+import 'relatorio_boletim_screen.dart';
 import 'grade_curricular_screen.dart';
 import 'rematricula_screen.dart';
 import 'situacao_academica_screen.dart';
@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
           HomeCard(
             title: 'BOLETIM (SEMESTRE ATUAL)',
             description: 'Desempenho nas disciplinas do semestre atual',
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BoletimScreen())),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RelatorioBoletimScreen())),
           ),
           HomeCard(
             title: 'GRADE CURRICULAR',
