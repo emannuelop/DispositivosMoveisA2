@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../models/usuario.dart';
 
 class SituacaoAcademicaScreen extends StatelessWidget {
-  const SituacaoAcademicaScreen({super.key});
+  final User usuario;
+
+  const SituacaoAcademicaScreen({super.key, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +33,10 @@ class SituacaoAcademicaScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildReadOnlyField('Nº de Matrícula', '0000000000000000'),
-            _buildReadOnlyField('Nome', 'JOHN DEV'),
-            _buildReadOnlyField('Curso', 'SISTEMAS DE INFORMAÇÃO'),
-            _buildReadOnlyField('Situação', 'Matriculado'),
+            _buildReadOnlyField('Nº de Matrícula', usuario.matricula),
+            _buildReadOnlyField('Nome', usuario.nome),
+            _buildReadOnlyField('Curso', usuario.curso),
+            _buildReadOnlyField('Situação', usuario.situacao),
             const SizedBox(height: 16),
             const Text(
               'Documentos:',
@@ -69,7 +72,7 @@ class SituacaoAcademicaScreen extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 24), // Espaço antes do botão
+            const SizedBox(height: 24),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton.icon(
@@ -84,9 +87,9 @@ class SituacaoAcademicaScreen extends StatelessWidget {
                   side: const BorderSide(color: Colors.grey),
                   foregroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  ),
                 ),
               ),
+            ),
           ],
         ),
       ),

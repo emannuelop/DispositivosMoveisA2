@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import '../../models/usuario.dart';
 
 class AnaliseCurricularScreen extends StatelessWidget {
-  const AnaliseCurricularScreen({super.key});
+  final User usuario;
+
+  const AnaliseCurricularScreen({super.key, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
     final dados = [
-            {
-        'matricula': '0000000000000000',
-        'cpf': '000.000.000-00',
-        'nome': 'JOHN DEV',
-        'curso': 'SISTEMAS DE INFORMAÇÃO',
+      {
+        'matricula': usuario.matricula,
+        'cpf': usuario.cpf,
+        'nome': usuario.nome,
+        'curso': usuario.curso,
         'modalidade': 'CÂMPUS PALMAS',
-        'status': 'Matriculado',
+        'status': usuario.situacao,
       },
     ];
 
@@ -95,7 +98,7 @@ class AnaliseCurricularScreen extends StatelessWidget {
 
   TableRow _buildDataRow(Map<String, String> data, bool isEven) {
     final textColor = const Color(0xFF0033A0);
-    final bgColor = isEven ? Colors.white : Color(0xFFF9F9F9);
+    final bgColor = isEven ? Colors.white : const Color(0xFFF9F9F9);
 
     return TableRow(
       decoration: BoxDecoration(color: bgColor),

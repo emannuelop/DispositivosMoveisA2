@@ -72,12 +72,12 @@ class HomeScreen extends StatelessWidget {
           HomeCard(
             title: 'SITUAÇÃO ACADÊMICA',
             description: 'Verifique sua situação acadêmica atual',
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SituacaoAcademicaScreen())),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SituacaoAcademicaScreen(usuario: usuarioAtual)))
           ),
           HomeCard(
             title: 'ANÁLISE CURRICULAR',
             description: 'Análise curricular completa',
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AnaliseCurricularScreen())),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AnaliseCurricularScreen(usuario: usuarioAtual))),
           ),
         ],
       ),

@@ -4,9 +4,9 @@ class AuthService {
   static final User _usuarioFixo = User(
     nome: 'John Dev',
     cpf: '123.456.789-00',
-    matricula: '2021001234',
+    matricula: '2025001234',
     curso: 'Sistemas de Informação',
-    situacao: 'Ativo',
+    situacao: 'Matriculado',
     senha: '123456',
   );
   static User? _usuarioLogado;
