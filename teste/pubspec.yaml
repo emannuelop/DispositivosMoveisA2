@@ -7,9 +7,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_multi_formatter: ^2.5.4
+
   http: ^1.2.1
   provider: ^6.1.2
   flutter_svg: ^2.0.10+1
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/logo.png
+    - assets/background.jpg
+

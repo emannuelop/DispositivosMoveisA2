@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/home_card.dart';
 import 'relatorio_boletim_screen.dart';
 import 'grade_curricular_screen.dart';
-import 'rematricula_screen.dart';
+import 'rematricula_final_screen.dart';
 import 'situacao_academica_screen.dart';
 import 'analise_curricular_screen.dart';
 
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
           HomeCard(
             title: 'REMATRÍCULA ONLINE',
             description: 'Refaça sua matrícula conforme calendário acadêmico',
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RematriculaScreen())),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RematriculaFinalScreen())),
           ),
           HomeCard(
             title: 'SITUAÇÃO ACADÊMICA',
