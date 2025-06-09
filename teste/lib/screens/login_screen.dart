@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'home_screen.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-
+import 'package:provider/provider.dart';
+import '../services/user_provider.dart';
+import '../models/usuario.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,8 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _emailController.text.trim();
     final senha = _senhaController.text.trim();
 
-    final sucesso = AuthService.login(email, senha);
-    if (sucesso) {
+    final usuario = AuthService.login(email, senha);
+    if (usuario != null) {
+      Provider.of<UserProvider>(context, listen: false).login(usuario);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const HomeScreen()),

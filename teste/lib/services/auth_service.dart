@@ -1,23 +1,22 @@
-import '../models/user.dart';
+import '../models/usuario.dart';
 
 class AuthService {
   static final User _usuarioFixo = User(
-    nome: 'João da Silva',
+    nome: 'John Dev',
     cpf: '123.456.789-00',
     matricula: '2021001234',
     curso: 'Sistemas de Informação',
     situacao: 'Ativo',
     senha: '123456',
   );
-
   static User? _usuarioLogado;
 
-  static bool login(String cpf, String senha) {
+  static User? login(String cpf, String senha) {
     if (cpf == _usuarioFixo.cpf && senha == _usuarioFixo.senha) {
       _usuarioLogado = _usuarioFixo;
-      return true;
+      return _usuarioFixo;
     }
-    return false;
+    return null;
   }
 
   static void logout() {

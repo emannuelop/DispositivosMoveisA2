@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import '../models/usuario.dart';
 import 'boletim_screen.dart';
 
 class RelatorioBoletimScreen extends StatefulWidget {
-  const RelatorioBoletimScreen({super.key});
+  final User usuario;
+
+  const RelatorioBoletimScreen({super.key, required this.usuario});
 
   @override
   State<RelatorioBoletimScreen> createState() => _RelatorioBoletimScreenState();
@@ -17,6 +20,8 @@ class _RelatorioBoletimScreenState extends State<RelatorioBoletimScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final temDisciplinas = widget.usuario.disciplinasMatriculadas.isNotEmpty;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,7 +52,8 @@ class _RelatorioBoletimScreenState extends State<RelatorioBoletimScreen> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
+              child: temDisciplinas
+                  ? ListView.builder(
                 itemCount: _courses.length,
                 itemBuilder: (context, index) {
                   return Container(
@@ -77,7 +83,7 @@ class _RelatorioBoletimScreenState extends State<RelatorioBoletimScreen> {
                             _courses[index],
                             style: const TextStyle(
                               fontSize: 16,
-                              color: Color(0xFF5F6368), // cinza azulado claro
+                              color: Color(0xFF5F6368),
                             ),
                           ),
                         ),
@@ -85,6 +91,13 @@ class _RelatorioBoletimScreenState extends State<RelatorioBoletimScreen> {
                     ),
                   );
                 },
+              )
+                  : const Center(
+                child: Text(
+                  'Você ainda não está matriculado em nenhuma disciplina.\nRealize a rematrícula primeiro.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -107,12 +120,13 @@ class _RelatorioBoletimScreenState extends State<RelatorioBoletimScreen> {
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
-                  onPressed: _selectedCourseIndex != null
+                  onPressed: temDisciplinas && _selectedCourseIndex != null
                       ? () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const BoletimScreen()),
+                        builder: (context) => BoletimScreen(usuario: widget.usuario),
+                      ),
                     );
                   }
                       : null,

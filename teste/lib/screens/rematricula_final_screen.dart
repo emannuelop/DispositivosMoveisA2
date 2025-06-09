@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart'; // <-- Certifique-se que o caminho está correto
 
 class RematriculaFinalScreen extends StatelessWidget {
-  const RematriculaFinalScreen({super.key});
+  final String nomeUsuario;
+
+  const RematriculaFinalScreen({super.key, required this.nomeUsuario});
 
   @override
   Widget build(BuildContext context) {
@@ -58,24 +61,24 @@ class RematriculaFinalScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
               ),
               padding: const EdgeInsets.all(16),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SelectableText.rich(
                     TextSpan(
                       children: [
-                        TextSpan(text: 'Prezado(a) aluno(a) '),
+                        const TextSpan(text: 'Prezado(a) aluno(a) '),
                         TextSpan(
-                          text: 'JOHN DEV',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          text: nomeUsuario.toUpperCase(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        TextSpan(text: ','),
+                        const TextSpan(text: ','),
                       ],
                     ),
-                    style: TextStyle(fontSize: 16, color: Color(0xFF416f90)),
+                    style: const TextStyle(fontSize: 16, color: Color(0xFF416f90)),
                   ),
-                  SizedBox(height: 8),
-                  SelectableText.rich(
+                  const SizedBox(height: 8),
+                  const SelectableText.rich(
                     TextSpan(
                       children: [
                         TextSpan(text: 'Sua rematrícula no semestre '),
@@ -92,17 +95,17 @@ class RematriculaFinalScreen extends StatelessWidget {
                     ),
                     style: TextStyle(fontSize: 16, color: Color(0xFF416f90)),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Clique aqui para imprimir seu comprovante de matrícula.',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Color(0xFF006ab4), // Azul marinho
+                      color: Color(0xFF006ab4),
                       decoration: TextDecoration.underline,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     'Clique aqui para imprimir o Termo da Rematrícula Online.',
                     style: TextStyle(
                       fontSize: 16,
@@ -112,6 +115,35 @@ class RematriculaFinalScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+
+          const Spacer(),
+
+          // Botão de voltar para a Home
+          Padding(
+            padding: const EdgeInsets.only(right: 16, bottom: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                          (route) => false,
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    side: const BorderSide(color: Colors.grey),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  ),
+                  child: const Text('Voltar para o Início'),
+                ),
+              ],
             ),
           ),
         ],
