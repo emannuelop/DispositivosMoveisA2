@@ -1,22 +1,20 @@
 import '../models/usuario.dart';
+import 'api_service.dart';
 
 class AuthService {
-  static final User _usuarioFixo = User(
-    nome: 'John Dev',
-    cpf: '123.456.789-00',
-    matricula: '2025001234',
-    curso: 'Sistemas de Informação',
-    situacao: 'Matriculado',
-    senha: '123456',
-  );
   static User? _usuarioLogado;
 
-  static User? login(String cpf, String senha) {
-    if (cpf == _usuarioFixo.cpf && senha == _usuarioFixo.senha) {
-      _usuarioLogado = _usuarioFixo;
-      return _usuarioFixo;
+  static Future<User?> login(String cpf, String senha) async {
+    final usuarios = await ApiService.fetchUsers();
+    try {
+      final user = usuarios.firstWhere(
+            (u) => u.cpf == cpf && u.senha == senha,
+      );
+      _usuarioLogado = user;
+      return user;
+    } catch (e) {
+      return null;
     }
-    return null;
   }
 
   static void logout() {

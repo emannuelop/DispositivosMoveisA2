@@ -2,29 +2,30 @@ class Disciplina {
   final String codigo;
   final String nome;
   final String ch;
+  final String periodo;
 
   Disciplina({
     required this.codigo,
     required this.nome,
     required this.ch,
+    required this.periodo,
   });
 
-  factory Disciplina.fromMap(Map<String, String> map) {
+  factory Disciplina.fromJson(Map<String, dynamic> json) {
     return Disciplina(
-      codigo: map['Código'] ?? '',
-      nome: map['Disciplina'] ?? '',
-      ch: map['CH'] ?? '',
+      codigo: json['codigo'],
+      nome: json['nome'],
+      ch: json['ch'],
+      periodo: json['periodo'],
     );
   }
 
-  Map<String, String> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'Código': codigo,
-      'Disciplina': nome,
-      'CH': ch,
+      'codigo': codigo,
+      'nome': nome,
+      'ch': ch,
+      'periodo': periodo,
     };
   }
-
-  @override
-  String toString() => '$codigo - $nome ($ch h)';
 }

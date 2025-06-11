@@ -16,11 +16,28 @@ class RematriculaScreen extends StatefulWidget {
 class _RematriculaScreenState extends State<RematriculaScreen> {
   List<Disciplina> disciplinasDisponiveis = [];
   Set<String> selecionadas = {};
+  bool carregando = true;
 
   @override
   void initState() {
     super.initState();
-    disciplinasDisponiveis = GradeService.getDisciplinasPrimeiroPeriodo();
+    _carregarDisciplinas();
+  }
+
+  Future<void> _carregarDisciplinas() async {
+    try {
+      final periodo = widget.usuario.periodo;
+      final disciplinas = await GradeService.fetchDisciplinasPorPeriodo(periodo);
+
+      setState(() {
+        disciplinasDisponiveis = disciplinas;
+        carregando = false;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erro ao carregar disciplinas.')),
+      );
+    }
   }
 
   void confirmarMatricula() {
@@ -41,12 +58,22 @@ class _RematriculaScreenState extends State<RematriculaScreen> {
       const SnackBar(content: Text('Matrícula realizada com sucesso!')),
     );
 
-    Navigator.pop(context);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            RematriculaFinalScreen(nomeUsuario: widget.usuario.nome),
+      ),
+    );
   }
+
+  bool get _deveRedirecionar =>
+      widget.usuario.jaRematriculado ||
+          widget.usuario.disciplinasMatriculadas.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
-    if (widget.usuario.jaRematriculado) {
+    if (_deveRedirecionar) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
@@ -59,10 +86,13 @@ class _RematriculaScreenState extends State<RematriculaScreen> {
       });
     }
 
-
     return Scaffold(
-      appBar: AppBar(title: const Text("Rematrícula - 1º Período")),
-      body: Padding(
+      appBar: AppBar(
+        title: Text("Rematrícula - ${widget.usuario.periodo}º Período"),
+      ),
+      body: carregando
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,10 +119,10 @@ class _RematriculaScreenState extends State<RematriculaScreen> {
               child: GridView.builder(
                 itemCount: disciplinasDisponiveis.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // dois quadrados por linha
+                  crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 3, // altura menor
+                  childAspectRatio: 3,
                 ),
                 itemBuilder: (context, index) {
                   final disciplina = disciplinasDisponiveis[index];
@@ -126,7 +156,8 @@ class _RematriculaScreenState extends State<RematriculaScreen> {
                       child: Text(
                         disciplina.nome,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   );
@@ -146,7 +177,8 @@ class _RematriculaScreenState extends State<RematriculaScreen> {
                   ),
                   backgroundColor: const Color(0xFF0056A4),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 12),
                   disabledBackgroundColor: Colors.grey.shade300,
                   disabledForegroundColor: Colors.grey.shade600,
                 ),
