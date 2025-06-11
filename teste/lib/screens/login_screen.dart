@@ -19,11 +19,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String? _erro;
 
-  void _login() {
-    final email = _emailController.text.trim();
+  void _login() async {
+    final cpf = _emailController.text.trim();
     final senha = _senhaController.text.trim();
 
-    final usuario = AuthService.login(email, senha);
+    final usuario = await AuthService.login(cpf, senha);
     if (usuario != null) {
       Provider.of<UserProvider>(context, listen: false).login(usuario);
       Navigator.pushReplacement(
@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

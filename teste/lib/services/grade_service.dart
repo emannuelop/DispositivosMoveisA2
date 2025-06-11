@@ -1,47 +1,38 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../models/disciplina.dart';
 
 class GradeService {
-  static final Map<String, List<Disciplina>> grade = {
-    "1º Período": [
-      Disciplina(codigo: "011001131", nome: "ALGORITMOS E PROGRAMAÇÃO I", ch: "60"),
-      Disciplina(codigo: "011001132", nome: "ARQUITETURA E ORGANIZAÇÃO DE COMPUTADORES I", ch: "60"),
-      Disciplina(codigo: "011001133", nome: "DESENVOLVIMENTO FRONT-END", ch: "60"),
-      Disciplina(codigo: "011001134", nome: "INGLÊS INSTRUMENTAL", ch: "60"),
-      Disciplina(codigo: "011001135", nome: "LEITURA E PRÁTICA DE PRODUÇÃO TEXTUAL", ch: "60"),
-    ],
-    // Outros períodos...
-    "2º Período": [
-      Disciplina(codigo: "011001136", nome: "PRÉ-CÁLCULO", ch: "60"),
-      // ... (restante das disciplinas do 2º período)
-    ],
-    "3º Período": [
-      // ...
-    ],
-    "4º Período": [
-      // ...
-    ],
-    "5º Período": [
-      // ...
-    ],
-    "6º Período": [
-      // ...
-    ],
-    "7º Período": [
-      // ...
-    ],
-    "8º Período": [
-      // ...
-    ],
-    "Optativas": [
-      // ...
-    ],
-  };
+  static const String baseUrl = 'https://68497d4145f4c0f5ee71a8c8.mockapi.io/api/v1/sistema';
 
-  static List<Disciplina> getDisciplinasPrimeiroPeriodo() {
-    return grade["1º Período"] ?? [];
+  /// Busca todas as disciplinas da API
+  static Future<List<Disciplina>> fetchTodasDisciplinas() async {
+    final response = await http.get(Uri.parse('$baseUrl/disciplinas'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => Disciplina.fromJson(json)).toList();
+    } else {
+      throw Exception('Erro ao carregar disciplinas');
+    }
   }
 
-  static Map<String, List<Disciplina>> getGradeCompleta() {
-    return grade;
+  /// Retorna apenas as disciplinas do período informado (ex: "1")
+  static Future<List<Disciplina>> fetchDisciplinasPorPeriodo(String periodo) async {
+    final todas = await fetchTodasDisciplinas();
+    return todas.where((d) => d.periodo == '${periodo}º Período').toList();
+  }
+
+  /// Retorna um mapa com todas as disciplinas organizadas por período
+  static Future<Map<String, List<Disciplina>>> fetchGradeCompleta() async {
+    final todas = await fetchTodasDisciplinas();
+    final Map<String, List<Disciplina>> gradePorPeriodo = {};
+
+    for (final disciplina in todas) {
+      gradePorPeriodo.putIfAbsent(disciplina.periodo, () => []);
+      gradePorPeriodo[disciplina.periodo]!.add(disciplina);
+    }
+
+    return gradePorPeriodo;
   }
 }
